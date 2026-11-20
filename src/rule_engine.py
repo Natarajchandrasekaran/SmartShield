@@ -202,12 +202,12 @@ class RuleEngine:
         if final_score >= 0.85 and len(features) >= 3:
             confidence = "high"
             needs_ml = False
-        elif final_score <= 0.15 and len(features) == 0:
+        elif len(legit_hits) >= 2 and len(features) == 0:
             confidence = "high"
             needs_ml = False
             top_category = "legitimate"
         else:
-            confidence = "medium" if len(features) >= 2 else "low"
+            confidence = "medium" if len(features) >= 1 else "low"
             needs_ml = True
         
         elapsed_us = (time.perf_counter_ns() - start_time) / 1000

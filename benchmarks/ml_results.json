@@ -1,0 +1,22 @@
+{
+  "model_type": "TF-IDF (Word+Char) + Balanced LogisticRegression",
+  "train_samples": 198,
+  "test_samples": 43,
+  "test_accuracy": 1.0,
+  "test_precision": 1.0,
+  "test_recall": 1.0,
+  "test_f1": 1.0,
+  "false_positive_rate": 0.0,
+  "confusion_matrix": [
+    [
+      9,
+      0
+    ],
+    [
+      0,
+      34
+    ]
+  ],
+  "model_size_kb": 353.78515625,
+  "train_time_ms": 197.67079991288483
+}

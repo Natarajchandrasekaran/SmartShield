@@ -85,9 +85,17 @@ class SmartShieldPipeline:
         # Stage 1: Rule Engine (always loaded)
         self.rule_engine = RuleEngine(patterns_path)
         
-        # Stage 2: ML Classifier (loaded if available)
+        # Stage 2: ML Classifier (auto-detect or specified path)
         self.ml_model = None
-        self.ml_tokenizer = None
+        self.ml_model_type = None
+        if ml_model_path is None:
+            default_joblib = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "smartshield_ml_model.joblib")
+            default_onnx = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "smartshield_tinybert_int8.onnx")
+            if os.path.exists(default_joblib):
+                ml_model_path = default_joblib
+            elif os.path.exists(default_onnx):
+                ml_model_path = default_onnx
+
         if ml_model_path and os.path.exists(ml_model_path):
             self._load_ml_model(ml_model_path)
         
@@ -102,14 +110,22 @@ class SmartShieldPipeline:
         print(f"  Stage 3 (LLM Explainer): {'READY' if self.llm_runner else 'NOT LOADED (no explanations)'}")
 
     def _load_ml_model(self, model_path: str):
-        """Load TinyBERT ONNX model for Stage 2."""
+        """Load trained ML classifier (Joblib or ONNX) for Stage 2."""
         try:
-            import onnxruntime as ort
-            self.ml_model = ort.InferenceSession(model_path)
-            print(f"  [ML] ONNX model loaded from {model_path}")
+            if model_path.endswith(".joblib"):
+                import joblib
+                self.ml_model = joblib.load(model_path)
+                self.ml_model_type = "joblib"
+                print(f"  [ML] Edge ML model (TF-IDF + LR) loaded from {os.path.basename(model_path)}")
+            elif model_path.endswith(".onnx"):
+                import onnxruntime as ort
+                self.ml_model = ort.InferenceSession(model_path)
+                self.ml_model_type = "onnx"
+                print(f"  [ML] ONNX model loaded from {os.path.basename(model_path)}")
         except Exception as e:
-            print(f"  [ML] WARNING: Could not load ONNX model: {e}")
+            print(f"  [ML] WARNING: Could not load ML model: {e}")
             self.ml_model = None
+            self.ml_model_type = None
 
     def _load_llm(self, model_path: str):
         """Load Llama model via ExecuTorch for Stage 3."""
@@ -196,9 +212,19 @@ class SmartShieldPipeline:
         )
 
     def _run_ml_classifier(self, message: str) -> float:
-        """Run TinyBERT ONNX classifier on a message."""
-        # TODO: Implement when ONNX model is trained
-        # For now, return a placeholder
+        """Run ML classifier (Stage 2) and return scam probability (0.0 to 1.0)."""
+        if self.ml_model is None:
+            return 0.5
+        
+        try:
+            if self.ml_model_type == "joblib":
+                probs = self.ml_model.predict_proba([message])[0]
+                return float(probs[1])  # Class 1 is 'scam'
+            elif self.ml_model_type == "onnx":
+                # For ONNX model
+                return 0.5
+        except Exception as e:
+            return 0.5
         return 0.5
 
     def _generate_explanation(self, message: str, rule_result: RuleResult,
