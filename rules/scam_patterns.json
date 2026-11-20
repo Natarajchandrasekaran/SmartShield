@@ -1,0 +1,126 @@
+{
+  "version": "1.0",
+  "description": "India-specific SMS scam detection patterns for SmartShield Rule Engine",
+
+  "urgency_keywords": {
+    "english": [
+      "immediately", "urgent", "within 24 hours", "within 2 hours",
+      "account will be blocked", "account suspended", "action required",
+      "verify now", "update now", "click now", "act now", "expire today",
+      "last chance", "final warning", "your account is at risk",
+      "failure to respond", "will be deactivated", "will be terminated"
+    ],
+    "hindi_transliterated": [
+      "turant", "abhi", "jaldi", "khatam ho jayega",
+      "band ho jayega", "block ho jayega", "verify karo",
+      "update karo", "aakhri mauka", "aakhri chetavni"
+    ]
+  },
+
+  "threat_keywords": {
+    "english": [
+      "legal action", "police complaint", "fir will be filed",
+      "arrest warrant", "your contacts will be notified",
+      "we will inform your family", "loan default", "recovery agent",
+      "cyber crime", "account frozen", "seized"
+    ],
+    "hindi_transliterated": [
+      "kanuni karyavahi", "police mein shikayat", "girftar",
+      "parivaar ko bataya jayega", "contacts ko bheja jayega",
+      "recovery agent bheja jayega"
+    ]
+  },
+
+  "otp_phishing_patterns": [
+    "(?:please\\s+)?share.*(?:your\\s+)?otp(?!.*do not share)",
+    "send.*(?:us|me).*otp", "otp.*share(?!.*do not)",
+    "tell.*(?:us|me).*otp", "provide.*(?:your\\s+)?otp",
+    "enter.*otp.*(?:here|below|link)",
+    "otp bhejo", "otp batao", "otp de do", "otp share karo"
+  ],
+
+  "kyc_scam_patterns": [
+    "kyc.*expir", "kyc.*update.*link", "kyc.*verification.*click",
+    "pan.*link.*aadha", "aadhar.*expir", "re.?verify.*kyc",
+    "kyc.*khatam", "kyc.*update.*karo", "kyc.*pending"
+  ],
+
+  "upi_fraud_patterns": [
+    "collect.*request.*accept", "approve.*collect", "credited.*approve",
+    "receive.*amount.*approve", "upi.*collect.*accept",
+    "collect request.*mila.*accept", "paisa.*aaya.*approve"
+  ],
+
+  "prize_lottery_patterns": [
+    "congratulations.*won", "you.*won.*rs", "you.*won.*lakh",
+    "lucky.*winner", "claim.*prize", "lottery.*winner",
+    "reward.*rs.*claim", "badhai.*jeet", "inaam.*mila"
+  ],
+
+  "loan_extortion_patterns": [
+    "pay.*immediately.*contacts", "repay.*loan.*now",
+    "default.*amount.*due", "recovery.*call.*contacts",
+    "loan.*overdue.*pay", "emi.*bounce.*action",
+    "contacts.*ko.*bheja", "loan.*abhi.*pay.*karo",
+    "pay.*rs.*\\d+.*(?:within|hours|immediately)",
+    "contacts.*(?:will be|notified|informed)",
+    "loan.*default"
+  ],
+
+  "job_scam_patterns": [
+    "earn.*per.*day.*home", "work.*from.*home.*daily",
+    "income.*rs.*daily.*whatsapp", "part.*time.*job.*rs",
+    "typing.*job.*earn", "simple.*task.*earn",
+    "ghar.*baithe.*kamai", "daily.*kamai", "paisa.*kamao",
+    "earn.*rs.*\\d+.*daily", "rs.*\\d+.*daily.*home",
+    "simple.*typing.*job", "whatsapp.*us.*\\d{10}",
+    "earn.*\\d+.*per.*day", "limited.*seats"
+  ],
+
+  "suspicious_url_patterns": [
+    "(?:^|\\s)bit\\.ly", "(?:^|\\s)tinyurl", "(?:^|\\s)goo\\.gl",
+    "(?:^|[\\s/])t\\.co(?:/|\\s|$)", "(?:^|\\s)rb\\.gy",
+    "(?:^|\\s)is\\.gd", "(?:^|\\s)cutt\\.ly", "shorturl",
+    "sbi-.*\\.xyz", "hdfc-.*\\.xyz", "icici-.*\\.xyz",
+    "paytm-.*\\.xyz", "phonepe-.*\\.xyz",
+    "\\w+bank\\w*\\.(?:xyz|tk|ml|ga|cf|top|buzz|club|info|online|site|live)",
+    "kyc-.*\\.(?:com|in|xyz|top)", "upi-.*\\.(?:com|in|xyz)",
+    "delivery-.*\\.(?:in|xyz|top)", "customs-.*\\.(?:in|xyz)"
+  ],
+
+  "bank_impersonation_patterns": [
+    "dear.*(?:sbi|hdfc|icici|axis|kotak|pnb|bob|canara|union).*customer",
+    "(?:sbi|hdfc|icici|axis|kotak).*(?:blocked|suspended|frozen|deactivated)",
+    "call.*(?:toll.*free|helpline|customer.*care).*\\d{10}",
+    "bank.*account.*(?:blocked|suspended).*call"
+  ],
+
+  "fake_delivery_patterns": [
+    "parcel.*held.*customs", "package.*delivery.*fee",
+    "shipment.*pending.*pay", "courier.*charges.*pay",
+    "delivery.*failed.*reschedule.*link",
+    "customs.*duty.*pay", "parcel.*ruka.*pay"
+  ],
+
+  "whitelist_sender_patterns": [
+    "^[A-Z]{2}-[A-Z]{6}$",
+    "SBIINB", "HDFCBK", "ICICIB", "AXISBK", "KOTAKB",
+    "AIRTEL", "JIOINF", "VIINFO", "AMZNIN", "FLPKRT",
+    "SWIGGY", "ZOMATO", "GOOGLE", "MSFT00"
+  ],
+
+  "legitimate_indicators": [
+    "if not done by you.*call.*1800",
+    "do not share.*otp.*anyone",
+    "do not share this otp",
+    "never share.*otp",
+    "upi ref.*no",
+    "a\\/c.*xx\\d{4}",
+    "transaction.*ref",
+    "otp.*valid.*for.*\\d+.*min",
+    "track.*order.*official",
+    "flipkart\\.com", "amazon\\.in", "swiggy\\.com",
+    "zomato\\.com", "myntra\\.com",
+    "www\\.(?:sbi|hdfc|icici|axis).*\\.(?:com|co\\.in)"
+  ]
+}

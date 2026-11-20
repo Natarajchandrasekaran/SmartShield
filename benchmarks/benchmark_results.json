@@ -1,0 +1,37 @@
+{
+  "system_info": {
+    "platform": "Windows-11-10.0.26300-SP0",
+    "processor": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel",
+    "architecture": "AMD64",
+    "python_version": "3.13.2",
+    "cpu_count": 12,
+    "total_ram_gb": 15.65
+  },
+  "rule_engine_benchmark": {
+    "total_runs": 4300,
+    "avg_latency_us": 219.01,
+    "min_latency_us": 106.5,
+    "max_latency_us": 8493.9,
+    "p50_latency_us": 176.9,
+    "p95_latency_us": 403.4,
+    "p99_latency_us": 650.0
+  },
+  "memory_usage": {
+    "rss_mb": 25.02,
+    "vms_mb": 13.56
+  },
+  "sustained_test": {
+    "duration_sec": 30.0,
+    "messages_processed": 96492,
+    "throughput_msgs_per_sec": 3214.8,
+    "memory_start_mb": 25.02,
+    "memory_end_mb": 25.07,
+    "memory_max_mb": 25.07,
+    "memory_leak_detected": false,
+    "memory_growth_pct": 0.2
+  },
+  "model_sizes": {
+    "scam_patterns.json": "4.5 KB"
+  },
+  "timestamp": "2026-11-20 19:22:02"
+}
