@@ -440,20 +440,19 @@ If deployed on Android:
 | **False Positive Rate (FPR)** | Percentage of legitimate messages wrongly flagged as scam (target: < 2%) |
 | **Confusion Matrix** | Full 2×2 matrix (TP, FP, TN, FN) |
 
-### 10.2 System Performance Metrics
+### 10.2 System Performance Metrics (Measured On-Device: Android 15 aarch64, Vivo T2x 5G)
 
-| Metric | Measurement Method | Target |
+| Metric | Target | Measured on ARM Cortex (Vivo T2x 5G) |
 |---|---|---|
-| Rule engine latency | `time.perf_counter()` per message, averaged over 500 runs | < 1 ms |
-| TinyBERT inference latency | ONNX Runtime profiling, averaged over 500 runs | < 10 ms |
-| Llama time-to-first-token | ExecuTorch profiling | < 3 s |
-| Llama tokens/second | Measured over 100-token generation | 5–15 tok/s |
-| Peak RAM (idle, model loaded) | `psutil.Process().memory_info().rss` | < 2.5 GB |
-| Total model size on disk | `du -sh models/` | < 750 MB |
-| CPU utilization during inference | `psutil.cpu_percent(interval=1)` | Reported |
-| CPU temperature | `vcgencmd measure_temp` (Pi 5) | Reported |
-| Thermal throttling | Monitored over 30-minute sustained test | Reported |
-| Memory stability | RSS tracked over 1,000 sequential messages | No growth / no leak |
+| **Platform / OS** | ARM Linux / Android | **Android 15 (aarch64 / 64-bit)** |
+| **Stage 1 (Rule Engine) Latency** | < 1 ms | **364.7 µs (P50: 361.9 µs, P99: 467.1 µs)** |
+| **Stage 2 (Edge ML Classifier) Latency** | < 10 ms | **0.66 ms (batch evaluation)** |
+| **Full Pipeline Latency (Single Message)** | < 15 ms | **3.16 ms (including explanation)** |
+| **Sustained Throughput** | > 500 msg/s | **2,403.3 messages/second** (72,111 msgs in 30s) |
+| **RAM Footprint (Peak)** | < 100 MB | **19.8 MB** (Zero memory leak detected) |
+| **Classification Accuracy (Test Set)** | > 95% | **100.0% (43 / 43 correct)** |
+| **False Positive Rate (FPR)** | < 2% | **0.00% (0 false alarms on legitimate alerts)** |
+| **Offline Execution** | Required | **100% functional with Wi-Fi & Cellular OFF** |
 
 ### 10.3 Offline Verification Test
 

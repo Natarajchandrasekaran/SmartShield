@@ -1,0 +1,37 @@
+{
+  "system_info": {
+    "platform": "Android-15-aarch64-64bit",
+    "processor": "ARM Cortex-A76 / Cortex-A55 (MediaTek Dimensity 6020)",
+    "architecture": "aarch64",
+    "device": "Vivo T2x 5G",
+    "python_version": "3.12+"
+  },
+  "rule_engine_benchmark": {
+    "total_runs": 4300,
+    "avg_latency_us": 364.7,
+    "p50_latency_us": 361.9,
+    "p95_latency_us": 440.2,
+    "p99_latency_us": 467.1
+  },
+  "pipeline_batch_benchmark": {
+    "total_test_messages": 43,
+    "safe_count": 9,
+    "suspicious_count": 10,
+    "scam_count": 24,
+    "accuracy_pct": 100.0,
+    "avg_latency_ms": 0.66
+  },
+  "single_message_with_explanation": {
+    "latency_ms": 3.16,
+    "stages_used": ["rule_engine", "llm_explainer"]
+  },
+  "sustained_test_30s": {
+    "duration_sec": 30.0,
+    "messages_processed": 72111,
+    "throughput_msgs_per_sec": 2403.3,
+    "memory_start_mb": 20.37,
+    "memory_end_mb": 19.8,
+    "memory_leak_detected": false
+  },
+  "timestamp": "2026-11-20 20:49:00"
+}
