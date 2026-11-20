@@ -89,9 +89,12 @@ class SmartShieldPipeline:
         self.ml_model = None
         self.ml_model_type = None
         if ml_model_path is None:
+            default_json = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "edge_model_weights.json")
             default_joblib = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "smartshield_ml_model.joblib")
             default_onnx = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "smartshield_tinybert_int8.onnx")
-            if os.path.exists(default_joblib):
+            if os.path.exists(default_json):
+                ml_model_path = default_json
+            elif os.path.exists(default_joblib):
                 ml_model_path = default_joblib
             elif os.path.exists(default_onnx):
                 ml_model_path = default_onnx
@@ -110,9 +113,14 @@ class SmartShieldPipeline:
         print(f"  Stage 3 (LLM Explainer): {'READY' if self.llm_runner else 'NOT LOADED (no explanations)'}")
 
     def _load_ml_model(self, model_path: str):
-        """Load trained ML classifier (Joblib or ONNX) for Stage 2."""
+        """Load trained ML classifier (JSON, Joblib or ONNX) for Stage 2."""
         try:
-            if model_path.endswith(".joblib"):
+            if model_path.endswith(".json"):
+                from src.edge_classifier import StandaloneEdgeClassifier
+                self.ml_model = StandaloneEdgeClassifier(model_path)
+                self.ml_model_type = "standalone"
+                print(f"  [ML] Pure-Python Standalone Edge Model loaded from {os.path.basename(model_path)}")
+            elif model_path.endswith(".joblib"):
                 import joblib
                 self.ml_model = joblib.load(model_path)
                 self.ml_model_type = "joblib"
@@ -134,7 +142,7 @@ class SmartShieldPipeline:
             print(f"  [LLM] ExecuTorch model path: {model_path}")
             # self.llm_runner = ExecuTorchRunner(model_path)
         except Exception as e:
-            print(f"  [LLM] WARNING: Could not load LLM: {e}")
+            print(f"  [ML] WARNING: Could not load LLM: {e}")
             self.llm_runner = None
 
     def detect(self, message: str, sender: str = "",
@@ -217,11 +225,12 @@ class SmartShieldPipeline:
             return 0.5
         
         try:
-            if self.ml_model_type == "joblib":
+            if self.ml_model_type == "standalone":
+                return float(self.ml_model.predict_proba(message))
+            elif self.ml_model_type == "joblib":
                 probs = self.ml_model.predict_proba([message])[0]
                 return float(probs[1])  # Class 1 is 'scam'
             elif self.ml_model_type == "onnx":
-                # For ONNX model
                 return 0.5
         except Exception as e:
             return 0.5
